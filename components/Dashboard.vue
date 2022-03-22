@@ -39,14 +39,14 @@ export default {
         name: this.newStatusName,
         color: this.newStatusColor
       }
-      await this.$axios.post('http://localhost:4000/api/status',status).then (res => {
+      await this.$axios.post('/status',status).then (res => {
         this.statuses.push(res.data);
         this.newStatusBox = false;
       })
     }
   },
   async mounted() {
-    this.statuses = await this.$axios.get("http://localhost:4000/api/status").then(
+    this.statuses = await this.$axios.get("/status").then(
       (res) => res.data
     );
     this.cards = await this.$axios.get("/tasks/all").then((res) =>

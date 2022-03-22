@@ -31,7 +31,7 @@ export default {
 
   publicRuntimeConfig: {
     axios: {
-      baseURL: "http://localhost:4000/api",
+      baseURL: process.env.HOST_HEADER,
     },
   },
 
