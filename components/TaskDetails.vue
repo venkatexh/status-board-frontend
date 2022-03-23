@@ -20,6 +20,14 @@
           :value="this.task.desc"
           @change="handleDescChange"
         />
+        <label class="">Status</label>
+        <select
+          class="outline-none cursor-pointer h-8"
+          @change="handleStatusChange"
+        >
+          <option :value="this.task.status" selected disabled hidden>{{this.task.status}}</option>
+          <option v-for="item in statuses" :key="item._id">{{ item.name }}</option>
+        </select>
         <button
           class="py-2 px-4 bg-black w-full text-white mx-auto mt-2 rounded"
           v-on:click="updateTask"
@@ -42,6 +50,7 @@ export default {
   name: "Task",
   data() {
     return {
+      statuses: [],
       task: {},
       taskName: "",
       taskDesc: "",
@@ -55,15 +64,18 @@ export default {
     handleDescChange(e) {
       this.taskDesc = e.target.value;
     },
+    handleStatusChange(e) {
+      this.taskStatus = e.target.value;
+    },
     async updateTask() {
       const task = {
         name: this.taskName,
         desc: this.taskDesc,
         status: this.taskStatus,
       };
-      await this.$axios
-        .put(`/tasks?taskId=${this.task._id}`, task)
-        .then((res) => {});
+      await this.$axios.put(`/tasks?taskId=${this.task._id}`, task).then(() => {
+        this.$router.push("/");
+      });
     },
     async deleteTask(url, config) {
       await this.$axios
@@ -86,6 +98,7 @@ export default {
         this.taskDesc = res.data.desc;
         this.taskStatus = res.data.status;
       });
+    this.statuses = await this.$axios.get("/status").then((res) => res.data);
   },
 };
 </script>
